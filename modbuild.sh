@@ -12,13 +12,15 @@ TAGS=`git tag`
 for TAG in $TAGS; do 
     echo ">>> Generating code for $TAG <<<";
     git checkout $TAG
-    mkdir -p ../srl/${TAG}
+    PKG=`echo ${TAG} | sed -e 's/v\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/srlv\1m\2p\3/I'`
+    mkdir -p ../srl/${PKG}
     # Renaming tools
     find ./srlinux-yang-models -name srl_nokia-tools* -exec rename srl_nokia-tools __srl_nokia-tools '{}' \;
+    # Package name
     # Generate code
     generator -path ${PREFIX} \
     -logtostderr \
-    -output_file=../srl/${TAG}/ysrl.go -package_name=ysrl \
+    -output_file=../srl/${PKG}/ysrl.go -package_name=${PKG} \
     -generate_fakeroot -fakeroot_name=Device \
     -compress_paths=false \
     -shorten_enum_leaf_names \
@@ -37,14 +39,14 @@ for TAG in $TAGS; do
     ${PREFIX}/srl_nokia/models/*/srl_nokia*.yang
     if [ $? != 0 ]; then 
         echo "FAILED to generate code for $TAG";
-        rm -rf ../srl/${TAG};
+        rm -rf ../srl/${PKG};
     else
-        cd ../srl/${TAG};
+        cd ../srl/${PKG};
         rm -f go*;
         go mod init;
         go mod tidy;
         cd $ROOT/srlinux-yang-models
-        go work use ../srl/${TAG};
+        # go work use ../srl/${TAG};
     fi
     # Restoring tools back
     find ./srlinux-yang-models -name __srl_nokia-tools* -exec rename __srl_nokia-tools srl_nokia-tools '{}' \;
