@@ -1,7 +1,9 @@
 #!/bin/bash
 ROOT=`pwd`
-PREFIX=`pwd`/srlinux-yang-models/srlinux-yang-models
-if [ -d srlinux-yang-models ]; then
+# rm -rf ./srlinux-yang-models
+# git clone https://github.com/nokia/srlinux-yang-models
+PREFIX=${ROOT}/srlinux-yang-models/srlinux-yang-models
+if [ $? == 0 ] && [ -d srlinux-yang-models ] ; then
     cd srlinux-yang-models
 else
     exit 1

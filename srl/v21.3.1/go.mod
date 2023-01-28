@@ -3,7 +3,7 @@ module github.com/azyablov/ysrl/srl/v21.3.1
 go 1.18
 
 require (
-	github.com/openconfig/gnmi v0.0.0-20220920173703-480bf53a74d2
+	github.com/openconfig/gnmi v0.9.1
 	github.com/openconfig/goyang v1.2.0
 	github.com/openconfig/ygot v0.25.6
 )
